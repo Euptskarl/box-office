@@ -1,8 +1,41 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import MainPageLayout from '../component/MainPageLayout';
 
 const Home = () => {
-  return <MainPageLayout>Home page</MainPageLayout>;
+  const [input, setInput] = useState('');
+
+  const onSearch = () => {
+    fetch(`https://api.tvmaze.com/search/shows?q=${input}`)
+      .then(r => r.json())
+      .then(result => {
+        console.log(result);
+      });
+  };
+
+  const onKeyDown = ev => {
+    if (ev.key === 13) {
+      onSearch();
+    }
+  };
+
+  const onInputChange = ev => {
+    setInput(ev.target.value);
+  };
+
+  return (
+    <MainPageLayout>
+      <input
+        type="text"
+        onChange={onInputChange}
+        onKeyDown={onKeyDown}
+        value={input}
+      />
+      <button type="button" onClick={onSearch}>
+        Search
+      </button>
+    </MainPageLayout>
+  );
 };
 
 export default Home;
